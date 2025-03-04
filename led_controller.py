@@ -3,7 +3,7 @@ import rpi_ws281x as ws
 import time
 from myconfig import *
 from pixelcolors import *
-import asyncio
+import threading
 
 class led_controller:
     def __init__(self):
@@ -14,6 +14,7 @@ class led_controller:
         self.strip = ws.PixelStrip(self.ledSettings.numLeds, self.ledSettings.gpio_pin)
         self.cap = None 
         self.running = True
+        self.thread = None
     
         self.strip.begin()
         self.setRGBColor(0,0,0) # Initalize to all black leds
@@ -37,7 +38,7 @@ class led_controller:
             print("Error: Could not open camera.")
             exit()
     
-    async def ambientLightHandler(self):
+    def ambientLightHandler(self):
         while self.running:
             returnValue, frame = self.cap.read()
 
@@ -56,20 +57,24 @@ class led_controller:
             
             # await asyncio.sleep(0.005) # Uh oh, I hope I dont need this line
             
-    async def startAmbientLight(self):
+    def startAmbientLight(self):
         self.openCamera()
         self.running = True
-        asyncio.create_task(self.ambientLightHandler())
-        
+        self.thread = threading.Thread(target=self.ambientLightHandler)
+        self.thread.daemon = True  # Ensure it closes when main program exits
+        self.thread.start()
+
+
     def stopAmbientLight(self):
         self.running = False
         self.closeCamera()
+        if self.thread is not None:
+            self.thread.join()  # Wait for the thread to finish
+            print("Thread stopped.")
         
-async def main():
-    aLedController = led_controller()
-    await aLedController.startAmbientLight()
-    await asyncio.sleep(20)
-    aLedController.stopAmbientLight()
+aLedController = led_controller()
+aLedController.startAmbientLight()
+time.sleep(20)
+aLedController.stopAmbientLight()
 
-asyncio.run(main())
 
