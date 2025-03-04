@@ -33,9 +33,6 @@ while True:
       break
       
     frame = cv2.blur(frame, (30, 30))
-    # cv2.imshow('Camera Feed', frame)
-    # if cv2.waitKey(1) & 0xFF == ord('q'):
-    #     break
     
     theRgbGenerator = pixelHandler.getPixelColorGenerator(frame)
 
@@ -46,5 +43,4 @@ while True:
 
 # Release the camera and close windows
 cap.release()
-cv2.destroyAllWindows()
 
