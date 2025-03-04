@@ -1,0 +1,66 @@
+/* main.css */
+
+body {
+  /* Basic styling */
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: white;
+  
+  /* Important: Set a fixed padding that will be our RGB border width */
+  padding: 10px;
+  
+  /* Apply the background with animation to the body */
+  background: linear-gradient(90deg, #ff0000, #ff00ff, #0000ff, #00ffff, #00ff00, #ffff00, #ff0000);
+  background-size: 400% 400%;
+  animation: rgbAnimation 8s ease infinite;
+  
+  /* Ensure the body takes up the full viewport */
+  min-height: 100vh;
+  box-sizing: border-box;
+  
+  /* Center the content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* This creates an inner container with dark background */
+.content-wrapper {
+  background-color: #121212;
+  flex-grow: 1;
+  min-height: calc(100vh - 2*10px); /* Full height minus twice the border width */
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* The actual content container */
+.content {
+  max-width: 800px;
+  padding: 25px;
+  background-color: #1a1a1a;
+  margin: 0 auto;
+}
+
+@keyframes rgbAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+h1 {
+  color: #ffffff;
+  text-align: center;
+  margin-top: 0;
+}
+
+p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
